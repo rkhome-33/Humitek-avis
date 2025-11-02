@@ -57,7 +57,7 @@ const ContactForm = () => {
     setErrors({});
     const formEl = e.currentTarget;
     const formData = new FormData(formEl);
-    if (formData.get("company")) return;
+    if (formData.get("company")) return; // honeypot anti-spam
 
     const eMap = validate(formData);
     if (Object.keys(eMap).length) { setErrors(eMap); return; }
@@ -137,5 +137,333 @@ const ContactForm = () => {
   );
 };
 
-// ... le reste de ton composant Home est identique à la dernière version,
-// incluant le footer avec Instagram et TikTok.
+export default function Home() {
+  const trustBullets = useMemo(() => [
+    { icon: CheckCircle2, label: "Experts en pathologies du bâtiment" },
+    { icon: Clock, label: "Intervention rapide" },
+    { icon: MapPin, label: "Bordeaux · Nouvelle-Aquitaine" },
+  ], []);
+
+  const jsonLdLocalBusiness = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "HUMITEK",
+    "url": "https://humitek.fr",
+    "telephone": "+33659610285",
+    "email": "contact@humitek.fr",
+    "address": {"streetAddress":"9 Rue de Condé", "addressLocality": "Bordeaux", "postalCode":"33000", "addressRegion": "Nouvelle-Aquitaine", "addressCountry": "FR"},
+    "areaServed": ["Bordeaux","Gironde","Nouvelle-Aquitaine","Mérignac","Pessac","Talence"],
+    "image": "/hero-photo.jpg",
+    "sameAs": [
+      "https://www.tiktok.com/@humitek?_r=1&_t=ZN-912HGiKVrra.",
+      "https://g.page/r/CVigK4G2ju1wEAE"
+    ]
+  };
+
+  const jsonLdFAQ = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {"@type":"Question","name":"Faites-vous de la recherche de fuites non destructive ?","acceptedAnswer":{"@type":"Answer","text":"Oui. Nous utilisons thermographie infrarouge, hygrométrie (capacitive/carbure), caméras d’inspection, tests traceurs et mises en eau contrôlées."}},
+      {"@type":"Question","name":"Intervenez-vous à Bordeaux et en Gironde ?","acceptedAnswer":{"@type":"Answer","text":"Oui, Bordeaux et toute la Nouvelle-Aquitaine (Gironde, Métropole et alentours)."}},
+      {"@type":"Question","name":"Fournissez-vous un rapport ?","acceptedAnswer":{"@type":"Answer","text":"Oui, un rapport clair avec photos, mesures et recommandations."}}
+    ]
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-50 text-slate-900">
+      <Head>
+        <title>{SEO_TITLE}</title>
+        <meta name="description" content={SEO_DESC} />
+        <meta name="keywords" content={SEO_KW} />
+        <meta property="og:title" content={SEO_TITLE} />
+        <meta property="og:description" content={SEO_DESC} />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="/hero-photo.jpg" />
+        <meta property="og:locale" content="fr_FR" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdLocalBusiness) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdFAQ) }} />
+      </Head>
+
+      {/* HEADER */}
+      <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/80 backdrop-blur">
+        <Container className="flex h-16 items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="relative h-10 w-10">
+              <Image src="/logo_humitek.png" alt="HUMITEK" fill className="object-contain" priority />
+            </div>
+            <div className="leading-tight">
+              <div className="font-extrabold tracking-tight">HUMITEK</div>
+              <div className="text-xs text-slate-500">Maîtriser l’humidité</div>
+            </div>
+          </div>
+          <nav className="hidden items-center gap-6 text-sm font-medium text-slate-700 md:flex">
+            <a href="#services" className="hover:text-sky-700">Services</a>
+            <a href="#avis" className="hover:text-sky-700">Avis</a>
+            <a href="#contact" className="hover:text-sky-700">Contact</a>
+          </nav>
+          <div className="flex items-center gap-2">
+            <a href="tel:+33659610285" className="hidden rounded-2xl border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-100 sm:inline-flex items-center gap-2">
+              <Phone className="h-4 w-4"/> 06 59 61 02 85
+            </a>
+            <a href="#contact" className="inline-flex items-center gap-2 rounded-2xl bg-sky-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-sky-700">
+              Devis <ArrowRight className="h-4 w-4"/>
+            </a>
+          </div>
+        </Container>
+      </header>
+
+      {/* HERO */}
+      <section className="relative border-b border-slate-200 bg-white">
+        <div className="absolute inset-0">
+          <Image src="/hero-photo.jpg" alt="Humidité, infiltrations et dégâts des eaux – inspection en cave/sous-sol" fill className="object-cover" priority />
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-900/70 via-slate-900/40 to-slate-900/10" />
+        </div>
+        <Container className="relative grid grid-cols-1 items-center gap-8 py-16 lg:grid-cols-2">
+          <div className="text-white">
+            <Pill icon={ShieldCheck} className="bg-white/90 text-slate-800">Maîtriser l’humidité</Pill>
+            <h1 className="mt-4 text-3xl font-extrabold tracking-tight sm:text-5xl">
+              Recherche de fuites, Recherche d’infiltrations, Diagnostic humidité
+            </h1>
+            <p className="mt-4 max-w-xl text-lg text-white/90">
+              <strong>Expert indépendant</strong>, <strong>Recherche non destructive</strong>, <strong>diagnostic complet</strong>.
+            </p>
+            <div className="mt-6 flex flex-wrap items-center gap-3">
+              <a href="#contact" className="inline-flex items-center gap-2 rounded-2xl bg-sky-600 px-5 py-3 font-semibold text-white shadow-sm hover:bg-sky-700">
+                Demander un devis <ArrowRight className="h-5 w-5"/>
+              </a>
+              <a href="tel:+33659610285" className="inline-flex items-center gap-2 rounded-2xl border border-white/70 bg-white/10 px-5 py-3 font-semibold text-white shadow-sm backdrop-blur hover:bg-white/20">
+                Appeler le 06 59 61 02 85
+              </a>
+            </div>
+            <div className="mt-6 flex flex-wrap items-center gap-2">
+              {trustBullets.map((b, i) => (
+                <Pill key={i} icon={b.icon} className="bg-white/90">{b.label}</Pill>
+              ))}
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      {/* SERVICES */}
+      <section id="services" className="border-b border-slate-200 bg-white py-12">
+        <Container>
+          <SectionTitle kicker="Services" title="Nos Services">
+            {/* Sous-texte supprimé */}
+          </SectionTitle>
+
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {/* FUITES */}
+            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+              <div className="flex items-center gap-3">
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-sky-50 text-sky-700">
+                  <Droplets className="h-6 w-6"/>
+                </div>
+                <h3 className="text-lg font-semibold">Recherche de fuites</h3>
+              </div>
+              <p className="mt-3 text-sm leading-6 text-slate-700">
+                Localisation <strong>non destructive</strong> par approche multi-instrumentale : thermographie, hygrométrie, caméras d’inspection, tests traceurs, mise en eau contrôlée.
+                Qualification de l’origine, du cheminement et de l’ampleur pour une réparation <em>ciblée</em>.
+              </p>
+              <ul className="mt-4 space-y-2">
+                <Bullet>Cartographie d’humidification et relevés normés</Bullet>
+                <Bullet>Détection des points singuliers et réseaux</Bullet>
+                <Bullet>Rapport photos/mesures exploitable par les assurances</Bullet>
+              </ul>
+            </div>
+
+            {/* INFILTRATIONS */}
+            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+              <div className="flex items-center gap-3">
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-sky-50 text-sky-700">
+                  <Ruler className="h-6 w-6"/>
+                </div>
+                <h3 className="text-lg font-semibold">Diagnostic infiltrations</h3>
+              </div>
+              <p className="mt-3 text-sm leading-6 text-slate-700">
+                Analyse des <strong>entrées d’eau structurelles</strong> : relevés d’étanchéité, pieds de murs enterrés, interfaces menuiseries/façades, toitures-terrasses.
+                Évaluation de la cinétique et des risques (salpêtre, décollements, corrosion) avec plan d’actions priorisé.
+              </p>
+              <ul className="mt-4 space-y-2">
+                <Bullet>Essais ciblés pour confirmer les hypothèses</Bullet>
+                <Bullet>Traçabilité des désordres et causes probables</Bullet>
+                <Bullet>Préconisations de remise en conformité</Bullet>
+              </ul>
+            </div>
+
+            {/* AVANT VENTE */}
+            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+              <div className="flex items-center gap-3">
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-sky-50 text-sky-700">
+                  <FileText className="h-6 w-6"/>
+                </div>
+                <h3 className="text-lg font-semibold">Expertise conseil avant vente</h3>
+              </div>
+              <p className="mt-3 text-sm leading-6 text-slate-700">
+                État des lieux <strong>indépendant</strong> avant transaction : identification des causes probables, estimation des correctifs, analyse des impacts.
+                Objectif : <em>réduire le risque de vice caché</em> et sécuriser la décision d’achat/vente.
+              </p>
+              <ul className="mt-4 space-y-2">
+                <Bullet>Rapport clair, opposable, illustré</Bullet>
+                <Bullet>Hiérarchisation des urgences et coûts indicatifs</Bullet>
+                <Bullet>Échanges possibles avec notaires et parties</Bullet>
+              </ul>
+            </div>
+
+            {/* SOLUTIONS */}
+            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+              <div className="flex items-center gap-3">
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-sky-50 text-sky-700">
+                  <Wrench className="h-6 w-6"/>
+                </div>
+                <h3 className="text-lg font-semibold">Solutions adaptées</h3>
+              </div>
+              <p className="mt-3 text-sm leading-6 text-slate-700">
+                Accompagnement vers les <strong>solutions les plus adaptées</strong> :
+                injections de résine (coupure de capillarité), cuvelage, ventilation/traitement de l’air (VMI/CTA),
+                étanchéités extérieures et drainage. Phasage des travaux et contrôle d’assèchement.
+              </p>
+              <ul className="mt-4 space-y-2">
+                <Bullet>Priorisation technique et budgétaire</Bullet>
+                <Bullet>Coordination avec entreprises et assurances</Bullet>
+                <Bullet>Contrôles post-intervention</Bullet>
+              </ul>
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      {/* AVIS */}
+      <section id="avis" className="border-b border-slate-200 bg-white py-12">
+        <Container>
+          <SectionTitle kicker="Avis" title="Avis Google">
+            Ils nous ont fait confiance.
+          </SectionTitle>
+
+          <div className="mt-2 flex justify-center" aria-label="Note moyenne 5 sur 5">
+            {Array.from({length: 5}).map((_, i) => (
+              <svg key={i} viewBox="0 0 20 20" className="mx-0.5 h-5 w-5 text-amber-500" fill="currentColor" aria-hidden>
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 0 0 .95.69h3.462c.967 0 1.371 1.24.588 1.81l-2.802 2.036a1 1 0 0 0-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.538 1.118l-2.802-2.036a1 1 0 0 0-1.176 0l-2.802 2.036c-.783.57-1.838-.197-1.538-1.118l1.07-3.292a1 1 0 0 0-.364-1.118L2.98 8.72c-.783-.57-.379-1.81.588-1.81h3.462a1 1 0 0 0 .95-.69l1.07-3.292Z"/>
+              </svg>
+            ))}
+            <span className="sr-only">Note moyenne 5/5</span>
+            <span className="ml-2 text-sm font-semibold text-slate-800">4,8/5</span>
+          </div>
+
+          <div className="mt-4 flex justify-center">
+            <a
+              href="https://g.page/r/CVigK4G2ju1wEAE/review"
+              target="_blank"
+              rel="noopener nofollow"
+              className="inline-flex items-center gap-2 rounded-2xl bg-sky-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-sky-700"
+            >
+              Voir nos avis Google
+            </a>
+          </div>
+
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3 mt-8">
+            {[
+              { name: "A. Martin", text: "Diagnostic précis et recommandations claires. Très pro." },
+              { name: "S. Bernard", text: "Fuite localisée rapidement, coordination efficace avec l’entreprise d’étanchéité." },
+              { name: "C. Dupuy", text: "Conseil avant achat pertinent, a permis d’ajuster le projet sans mauvaise surprise." },
+            ].map((r, i) => (
+              <div key={i} className="rounded-2xl border border-slate-200 bg-slate-50 p-6 shadow-sm">
+                <p className="text-sm text-slate-700">“{r.text}”</p>
+                <div className="mt-3 text-sm font-semibold text-slate-900">— {r.name}</div>
+              </div>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      {/* CONTACT */}
+      <section id="contact" className="bg-slate-50 py-12">
+        <Container>
+          <div className="mb-8 text-center">
+            <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">Contact & Devis</h2>
+            <p className="mx-auto mt-3 max-w-2xl text-slate-600">
+              Bordeaux – Nouvelle-Aquitaine. Dites-nous ce que vous constatez, nous revenons vers vous rapidement.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+              <div className="flex items-center gap-3">
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-sky-600 text-white">
+                  <Phone className="h-6 w-6"/>
+                </div>
+                <div>
+                  <div className="font-semibold">Un besoin urgent ?</div>
+                  <div className="text-sm text-slate-600">Appelez-nous ou laissez vos coordonnées.</div>
+                </div>
+              </div>
+              <ul className="mt-4 space-y-2 text-sm text-slate-700">
+                <li><strong>Tél.</strong> : <a className="text-sky-700 hover:underline" href="tel:+33659610285">06 59 61 02 85</a></li>
+                <li><strong>Email</strong> : <a className="text-sky-700 hover:underline" href="mailto:contact@humitek.fr">contact@humitek.fr</a></li>
+                <li><strong>Adresse</strong> : HUMITEK – 9 Rue de Condé, 33000 Bordeaux</li>
+                <li><strong>Zone</strong> : Bordeaux · Nouvelle-Aquitaine</li>
+              </ul>
+            </div>
+            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+              <ContactForm />
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="border-t border-slate-200 bg-white py-10 text-sm text-slate-600">
+        <Container className="grid grid-cols-1 gap-8 md:grid-cols-3">
+          <div>
+            <div className="font-semibold text-slate-800">HUMITEK</div>
+            <p className="mt-2 max-w-sm">
+              Maîtriser l’humidité : recherche de fuites, diagnostic des infiltrations, injections de résine, cuvelage, ventilation (VMI/CTA) et assèchement.
+            </p>
+          </div>
+
+          <div>
+            <div className="font-semibold text-slate-800">Coordonnées</div>
+            <ul className="mt-2 space-y-1">
+              <li>📞 <a className="text-sky-700 hover:underline" href="tel:+33659610285">06 59 61 02 85</a></li>
+              <li>✉️ <a className="text-sky-700 hover:underline" href="mailto:contact@humitek.fr">contact@humitek.fr</a></li>
+              <li>📍 9 Rue de Condé, 33000 Bordeaux</li>
+            </ul>
+          </div>
+
+          <div>
+            <div className="font-semibold">Réseaux sociaux</div>
+            <ul className="mt-2 flex items-center gap-3">
+              <li>
+                <a
+                  href="https://www.tiktok.com/@humitek?_r=1&_t=ZN-912HGiKVrra."
+                  target="_blank" rel="noopener"
+                  aria-label="TikTok"
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 hover:bg-slate-100"
+                >
+                  <svg viewBox="0 0 48 48" className="h-5 w-5" aria-hidden>
+                    <path d="M34 15.5c2.2 1.7 4.9 2.8 7.8 3.1v6.2c-3.5-.1-6.8-1.2-9.6-3.1v11.2c0 7.7-6.3 14-14 14S4 40.6 4 32.9s6.3-14 14-14c1 0 2 .1 3 .3v6.8a8 8 0 0 0-3-.6c-4.4 0-8 3.6-8 8s3.6 8 8 8 8-3.6 8-8V4h8v.1c.4 4.4 3.2 8.1 7 9.4V15.5z" fill="currentColor"/>
+                  </svg>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://www.instagram.com/humitek_solutions?igsh=NWE2ZG0zaXY3b2lx&utm_source=qr"
+                  target="_blank" rel="noopener"
+                  aria-label="Instagram"
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 hover:bg-slate-100"
+                >
+                  <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden>
+                    <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.5A5.5 5.5 0 1 1 6.5 13 5.5 5.5 0 0 1 12 7.5zm0 2A3.5 3.5 0 1 0 15.5 13 3.5 3.5 0 0 0 12 9.5zm6.25-3.25a1 1 0 1 1-1 1 1 1 0 0 1 1-1z" fill="currentColor"/>
+                  </svg>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </Container>
+        <Container className="mt-8 border-t border-slate-200 pt-6 text-center">
+          <p>© {new Date().getFullYear()} HUMITEK – Maîtriser l’humidité. Tous droits réservés.</p>
+        </Container>
+      </footer>
+    </div>
+  );
+}
